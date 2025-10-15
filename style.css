@@ -10,23 +10,26 @@
     overflow: hidden;
   }
 
-  /* kill flex entirely — force layout reset */
+  /* Remove any flex — anchor content with absolute positioning */
   body {
     display: block !important;
   }
 
+  /* Frosted-glass content box */
   .content {
     position: absolute !important;
-    top: 10vh !important;          /* move this value to place the box higher/lower */
+    top: 10vh !important;           /* adjust vertical placement here */
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: auto;
     max-width: 800px;
+    width: calc(100% - 48px);
     text-align: center;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
     padding: 2rem 3rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);   /* translucent glass */
+    backdrop-filter: blur(10px);             /* frosted effect */
+    -webkit-backdrop-filter: blur(10px);     /* Safari support */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); /* soft glow */
     opacity: 0;
     animation: fadeIn 1.5s ease forwards;
   }
@@ -34,7 +37,8 @@
   h1 {
     margin: 0 0 0.5rem 0;
     font-size: 2.2rem;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   p {
@@ -45,10 +49,18 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, 20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+    from {
+      opacity: 0;
+      transform: translate(-50%, 20px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
   }
 
-  /* keep chat widget above everything */
-  #divicw, #divicw * { z-index: 99999; }
+  /* Keep chat widget above everything */
+  #divicw, #divicw * {
+    z-index: 99999;
+  }
 </style>

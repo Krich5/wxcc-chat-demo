@@ -13,37 +13,39 @@
     background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
     background-size: cover;
     display: flex;
-    align-items: flex-start;   /* push content upward */
+    align-items: flex-start;   /* push content to the top */
     justify-content: center;
-    padding-top: 6vh;          /* adjust top offset as needed */
+    padding-top: 6vh;          /* control how far from the top */
   }
 
-  /* Remove dark overlay entirely */
+  /* Overlay for subtle contrast */
   .overlay {
-    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
   }
 
-  /* Content box - transparent now */
+  /* Main content container */
   .content {
     position: relative;
     z-index: 1;
     max-width: 800px;
     padding: 2rem 3rem;
     border-radius: 12px;
-    background: transparent;     /* no blur or color */
-    box-shadow: none;            /* remove shadow */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   }
 
   h1 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
     letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4); /* slight glow for readability */
   }
 
   p {
     font-size: 1.1rem;
-    color: #e0e0e0;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* keeps text readable on bright areas */
+    color: #ccc;
   }
 </style>

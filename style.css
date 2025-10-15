@@ -1,54 +1,66 @@
 <style>
-  /* Page base */
+  /* ---------- Page Base ---------- */
   html, body {
     height: 100%;
     margin: 0;
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #fff;
     text-align: center;
-    overflow: hidden;                  /* keep background fixed/clean */
+    overflow: hidden;
   }
 
-  /* Background image */
+  /* ---------- Background Image ---------- */
   body {
-    position: relative;                /* make body the positioning context */
+    position: relative;
     background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
     background-size: cover;
   }
 
-  /* Remove any overlay */
-  .overlay { display: none !important; }
-
-  /* Content card — pinned from the top */
+  /* ---------- Content Container ---------- */
   .content {
-    position: absolute;                /* pin it instead of flex */
-    top: 12vh;                         /* << move up/down here (smaller = higher) */
+    position: absolute;
+    top: 14vh;                 /* Adjust this to move up/down */
     left: 50%;
     transform: translateX(-50%);
     max-width: 800px;
-    width: calc(100% - 48px);          /* some side breathing room on mobile */
+    width: calc(100% - 48px);
     padding: 2rem 3rem;
+    background: transparent;
     border-radius: 12px;
-    background: transparent !important;/* no blur/tint */
-    box-shadow: none !important;       /* no shadow */
+    box-shadow: none;
+    opacity: 0;                /* for fade-in */
+    animation: fadeIn 1.6s ease forwards;
   }
 
+  /* ---------- Text Styling ---------- */
   h1 {
-    font-size: 2rem;
-    margin: 0 0 .5rem 0;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(0,0,0,.4); /* soft glow for readability */
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   }
 
   p {
     font-size: 1.1rem;
-    margin: 0 0 .5rem 0;
     color: #e0e0e0;
-    text-shadow: 0 0 6px rgba(0,0,0,.3);
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    margin: 0.3rem 0;
   }
 
-  /* Optional: keep the chat bubble clickable on top of everything */
+  /* ---------- Fade-In Animation ---------- */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  /* ---------- Widget Priority ---------- */
   #divicw, #divicw * {
-    z-index: 100000;                   /* ensure widget stays above content */
+    z-index: 100000;
   }
 </style>

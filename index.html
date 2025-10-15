@@ -1,16 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Webex Chat Demo</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <h2>Webex Contact Center Chat Demo</h2>
-    <!-- Embed your Webex chat widget -->
-    <script src="https://cxwidget.webex.com/widget/webexcc.js"></script>
-    <div id="webex-chat"></div>
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Webex Connect Chat – Demo</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 2rem; }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    h1 { margin: 0 0 0.5rem 0; }
+    p { margin: 0 0 1rem 0; color: #444; }
+    .note { background: #f6f8fa; border: 1px solid #eaecef; padding: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Webex Connect Chat Demo</h1>
+    <p class="note">
+      This page only exists to host the widget for a demo. Open your browser devtools (Console/Network) if the bubble doesn’t appear.
+    </p>
+  </div>
+
+  <!-- Your widget mount element + loader (unchanged except for formatting) -->
+  <div id="divicw"
+       data-bind="ABFE97A4-B352-40AE-92B5-E64558B39443"
+       data-org="" 
+       data-guid="7ad20415-02d9-4c4e-a4ae-c5229f8f5266">
+  </div>
+
+  <script>
+    // Original loader, just spaced for readability
+    var i = {
+      t: function () {
+        var u = "https://media.imi.chat/widget/js/imichatinit.js";
+        try {
+          var x = new XMLHttpRequest();
+          x.onreadystatechange = function () {
+            if (this.readyState == 4) {
+              var host = document.getElementById("divicw");
+              if (this.status == 0) {
+                i.o(host);
+                return;
+              }
+              var s = document.createElement("script");
+              s.innerHTML = this.responseText;
+              host.parentNode.insertBefore(s, host.nextSibling);
+            }
+          };
+          x.open("GET", u, true);
+          x.send();
+        } catch (e) {
+          console.error(e);
+        }
+      },
+      o: function (host) {
+        host.insertAdjacentHTML(
+          "afterend",
+          '<iframe id="tls_al_frm" frameborder="0" style="overflow:hidden;height:208px;width:394px;position:fixed;display:block;right:48px;bottom:12px;z-index:99999;display:none;"></iframe>'
+        );
+        var f = document.getElementById("tls_al_frm");
+        var w = f.contentWindow || (f.contentDocument.document || f.contentDocument);
+        w.document.open();
+        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Browser Unsupported</title><style>body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#99a0b0;font-size:14px}.popover__content{background-color:#fbfbfe;padding:1.5rem;border-radius:5px;width:300px;box-shadow:0 2px 5px rgba(0,0,0,.26);position:relative}.popover__message{font-weight:600;color:#56627c;font-size:16px}.pull-left{float:left}.clearfix{clear:both}.hdr-txt{width:218px;margin-top:3px}.para-txt a{text-decoration:none;color:#005cde}.close-btn{position:absolute;right:15px;top:15px}.close-btn a{text-decoration:none;font-weight:400;color:#56627c;font-size:16px}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget.</p></div><script>function closeTLSAlert(){window.parent.postMessage({key:"close_tls_alert",value:"close_tls_alert",action:"close_tls_alert"},"*");}<\/script></body></html>');
+        w.document.close();
+        f.style.display = "block";
+        window.addEventListener("message", function (e) {
+          if (e.data.action == "close_tls_alert") { i.s(); }
+        });
+      },
+      s: function () {
+        var f = document.getElementById("tls_al_frm");
+        if (f) f.remove();
+      }
+    };
+    i.t();
+  </script>
+</body>
 </html>

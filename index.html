@@ -1,51 +1,117 @@
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #fff;
-    text-align: center;
-    overflow: hidden;
-  }
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Webex Connect Chat – CX Advanced Solutions Demo</title>
 
-  /* Background */
-  body {
-    background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    align-items: flex-start;   /* push content to the top */
-    justify-content: center;
-    padding-top: 6vh;          /* control how far from the top */
-  }
+  <style>
+    /* Reset and base styling */
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
 
-  /* Overlay for subtle contrast */
-  .overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: 0;
-  }
+    /* Background image */
+    body {
+      background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  /* Main content container */
-  .content {
-    position: relative;
-    z-index: 1;
-    max-width: 800px;
-    padding: 2rem 3rem;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  }
+    /* Overlay to improve contrast */
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-  }
+    /* Main content */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
 
-  p {
-    font-size: 1.1rem;
-    color: #ccc;
-  }
-</style>
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Webex Connect Chat Demo</h1>
+    <p>Hosted by CX Advanced Solutions</p>
+    <p>Interact with the chat widget in the lower right corner.</p>
+  </div>
+
+  <!-- Webex Connect Widget -->
+  <div id="divicw"
+       data-bind="ABFE97A4-B352-40AE-92B5-E64558B39443"
+       data-org=""
+       data-guid="7ad20415-02d9-4c4e-a4ae-c5229f8f5266">
+  </div>
+
+  <script>
+    var i = {
+      t: function () {
+        var u = "https://media.imi.chat/widget/js/imichatinit.js";
+        try {
+          var x = new XMLHttpRequest();
+          x.onreadystatechange = function () {
+            if (this.readyState == 4) {
+              var host = document.getElementById("divicw");
+              if (this.status == 0) { i.o(host); return; }
+              var s = document.createElement("script");
+              s.innerHTML = this.responseText;
+              host.parentNode.insertBefore(s, host.nextSibling);
+            }
+          };
+          x.open("GET", u, true);
+          x.send();
+        } catch (e) { console.error(e); }
+      },
+      o: function (host) {
+        host.insertAdjacentHTML("afterend",
+          '<iframe id="tls_al_frm" frameborder="0" style="overflow:hidden;height:208px;width:394px;position:fixed;right:48px;bottom:12px;z-index:99999;display:none;"></iframe>'
+        );
+        var f = document.getElementById("tls_al_frm");
+        var w = f.contentWindow || (f.contentDocument.document || f.contentDocument);
+        w.document.open();
+        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Browser Unsupported</title><style>body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#99a0b0;font-size:14px}.popover__content{background-color:#fbfbfe;padding:1.5rem;border-radius:5px;width:300px;box-shadow:0 2px 5px rgba(0,0,0,.26);position:relative}.popover__message{font-weight:600;color:#56627c;font-size:16px}.pull-left{float:left}.clearfix{clear:both}.hdr-txt{width:218px;margin-top:3px}.para-txt a{text-decoration:none;color:#005cde}.close-btn{position:absolute;right:15px;top:15px}.close-btn a{text-decoration:none;font-weight:400;color:#56627c;font-size:16px}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget.</p></div><script>function closeTLSAlert(){window.parent.postMessage({key:"close_tls_alert",value:"close_tls_alert",action:"close_tls_alert"},"*");}<\/script></body></html>');
+        w.document.close();
+        f.style.display = "block";
+        window.addEventListener("message", function (e) {
+          if (e.data.action == "close_tls_alert") { i.s(); }
+        });
+      },
+      s: function () {
+        var f = document.getElementById("tls_al_frm");
+        if (f) f.remove();
+      }
+    };
+    i.t();
+  </script>
+</body>
+</html>

@@ -10,15 +10,15 @@
     overflow: hidden;
   }
 
-  /* Remove any flex — anchor content with absolute positioning */
+  /* Disable flex */
   body {
     display: block !important;
   }
 
-  /* Frosted-glass content box */
+  /* Frosted glass floating card */
   .content {
     position: absolute !important;
-    top: 10vh !important;           /* adjust vertical placement here */
+    top: 10vh !important;             /* move up/down here */
     left: 50% !important;
     transform: translateX(-50%) !important;
     max-width: 800px;
@@ -26,12 +26,12 @@
     text-align: center;
     padding: 2rem 3rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.12);   /* translucent glass */
-    backdrop-filter: blur(10px);             /* frosted effect */
-    -webkit-backdrop-filter: blur(10px);     /* Safari support */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); /* soft glow */
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
+    animation: fadeIn 1.5s ease forwards, floaty 6s ease-in-out infinite;
   }
 
   h1 {
@@ -48,18 +48,19 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   }
 
+  /* Fade-in for initial load */
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translate(-50%, 20px);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
   }
 
-  /* Keep chat widget above everything */
+  /* Floating animation loop */
+  @keyframes floaty {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, -10px); }
+  }
+
+  /* Ensure chat widget is always on top */
   #divicw, #divicw * {
     z-index: 99999;
   }

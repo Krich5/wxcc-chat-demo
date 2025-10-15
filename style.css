@@ -10,42 +10,26 @@
 
   /* Background */
   body {
+    position: relative; /* <-- add */
     background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
     background-size: cover;
-    display: flex;
-    align-items: flex-start;   /* push content to the top */
-    justify-content: center;
-    padding-top: 60vh;          /* control how far from the top */
   }
 
-  /* Overlay for subtle contrast */
-  .overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: 0;
-  }
+  /* No overlay/blur/shadow */
+  .overlay { display: none; }
 
-  /* Main content container */
   .content {
-    position: relative;
-    z-index: 1;
+    position: absolute;          /* <-- pin it */
+    top: 12vh;                   /* <-- move up/down here */
+    left: 50%;
+    transform: translateX(-50%);
     max-width: 800px;
     padding: 2rem 3rem;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background: transparent;     /* no tint */
+    box-shadow: none;            /* no shadow */
   }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: #ccc;
-  }
+  h1 { margin-bottom: .5rem; letter-spacing: 1px; text-shadow: 0 0 8px rgba(0,0,0,.4); }
+  p  { color: #e0e0e0; text-shadow: 0 0 6px rgba(0,0,0,.3); }
 </style>

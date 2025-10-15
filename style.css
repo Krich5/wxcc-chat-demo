@@ -1,35 +1,54 @@
 <style>
+  /* Page base */
   html, body {
     height: 100%;
     margin: 0;
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #fff;
     text-align: center;
-    overflow: hidden;
+    overflow: hidden;                  /* keep background fixed/clean */
   }
 
-  /* Background */
+  /* Background image */
   body {
-    position: relative; /* <-- add */
+    position: relative;                /* make body the positioning context */
     background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
     background-size: cover;
   }
 
-  /* No overlay/blur/shadow */
-  .overlay { display: none; }
+  /* Remove any overlay */
+  .overlay { display: none !important; }
 
+  /* Content card — pinned from the top */
   .content {
-    position: absolute;          /* <-- pin it */
-    top: 4vh;                   /* <-- move up/down here */
+    position: absolute;                /* pin it instead of flex */
+    top: 12vh;                         /* << move up/down here (smaller = higher) */
     left: 50%;
     transform: translateX(-50%);
     max-width: 800px;
+    width: calc(100% - 48px);          /* some side breathing room on mobile */
     padding: 2rem 3rem;
     border-radius: 12px;
-    background: transparent;     /* no tint */
-    box-shadow: none;            /* no shadow */
+    background: transparent !important;/* no blur/tint */
+    box-shadow: none !important;       /* no shadow */
   }
 
-  h1 { margin-bottom: .5rem; letter-spacing: 1px; text-shadow: 0 0 8px rgba(0,0,0,.4); }
-  p  { color: #e0e0e0; text-shadow: 0 0 6px rgba(0,0,0,.3); }
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 .5rem 0;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0,0,0,.4); /* soft glow for readability */
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 0 0 .5rem 0;
+    color: #e0e0e0;
+    text-shadow: 0 0 6px rgba(0,0,0,.3);
+  }
+
+  /* Optional: keep the chat bubble clickable on top of everything */
+  #divicw, #divicw * {
+    z-index: 100000;                   /* ensure widget stays above content */
+  }
 </style>

@@ -20,7 +20,7 @@
 
   .content {
     position: absolute;          /* <-- pin it */
-    top: 120vh;                   /* <-- move up/down here */
+    top: 4vh;                   /* <-- move up/down here */
     left: 50%;
     transform: translateX(-50%);
     max-width: 800px;

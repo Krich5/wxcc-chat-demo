@@ -1,5 +1,49 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 2em;
-}
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Background */
+  body {
+    background: url("Chrome%20Wallpaper.png") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: flex-start;   /* push content upward */
+    justify-content: center;
+    padding-top: 6vh;          /* adjust top offset as needed */
+  }
+
+  /* Remove dark overlay entirely */
+  .overlay {
+    display: none;
+  }
+
+  /* Content box - transparent now */
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    background: transparent;     /* no blur or color */
+    box-shadow: none;            /* remove shadow */
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4); /* slight glow for readability */
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* keeps text readable on bright areas */
+  }
+</style>

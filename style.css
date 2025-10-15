@@ -1,4 +1,5 @@
 <style>
+  /* Base / background */
   html, body {
     height: 100%;
     margin: 0;
@@ -10,58 +11,56 @@
     overflow: hidden;
   }
 
-  /* Disable flex */
-  body {
-    display: block !important;
-  }
+  /* kill flex leftovers */
+  body { display: block !important; }
 
-  /* Frosted glass floating card */
+  /* THE CARD — strong overrides so it actually shows */
   .content {
     position: absolute !important;
-    top: 10vh !important;             /* move up/down here */
+    top: 10vh !important;               /* move higher/lower here */
     left: 50% !important;
     transform: translateX(-50%) !important;
+
+    /* make it look like a card again */
     max-width: 800px;
     width: calc(100% - 48px);
+    min-height: 140px;                   /* ensures the panel is visible */
+    padding: 24px 32px;
+
+    background: rgba(255, 255, 255, 0.16) !important;   /* visible glass */
+    backdrop-filter: blur(12px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.45) !important;
+
     text-align: center;
-    padding: 2rem 3rem;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards, floaty 6s ease-in-out infinite;
+    animation: fadeIn 1.2s ease forwards, floaty 6s ease-in-out infinite;
   }
 
   h1 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 8px 0;
     font-size: 2.2rem;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(0,0,0,.5);
   }
-
   p {
+    margin: 4px 0;
     font-size: 1.1rem;
-    color: #e0e0e0;
-    margin: 0.3rem 0;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    color: #eaeaea;
+    text-shadow: 0 0 6px rgba(0,0,0,.35);
   }
 
-  /* Fade-in for initial load */
   @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, 20px); }
+    from { opacity: 0; transform: translate(-50%, 18px); }
     to   { opacity: 1; transform: translate(-50%, 0); }
   }
-
-  /* Floating animation loop */
   @keyframes floaty {
     0%, 100% { transform: translate(-50%, 0); }
     50%      { transform: translate(-50%, -10px); }
   }
 
-  /* Ensure chat widget is always on top */
-  #divicw, #divicw * {
-    z-index: 99999;
-  }
+  /* keep the chat bubble above */
+  #divicw, #divicw * { z-index: 99999; }
 </style>

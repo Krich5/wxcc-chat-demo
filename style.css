@@ -1,66 +1,29 @@
 <style>
-  /* Base / background */
-  html, body {
-    height: 100%;
+  body {
+    font-family: system-ui, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #fff;
-    background: url("Chat_Demo_Wallpaper.png") no-repeat center center fixed;
+    background: url("background.jpg") no-repeat center center fixed;
     background-size: cover;
-    overflow: hidden;
+    color: #fff; /* adjust text for contrast */
+    height: 100vh;
   }
 
-  /* kill flex leftovers */
-  body { display: block !important; }
-
-  /* THE CARD — strong overrides so it actually shows */
-  .content {
-    position: absolute !important;
-    top: 10vh !important;               /* move higher/lower here */
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-
-    /* make it look like a card again */
-    max-width: 800px;
-    width: calc(100% - 48px);
-    min-height: 140px;                   /* ensures the panel is visible */
-    padding: 24px 32px;
-
-    background: rgba(255, 255, 255, 0.16) !important;   /* visible glass */
-    backdrop-filter: blur(12px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.45) !important;
-
-    text-align: center;
-    opacity: 0;
-    animation: fadeIn 1.2s ease forwards, floaty 6s ease-in-out infinite;
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: rgba(0, 0, 0, 0.5); /* adds a nice overlay behind text */
+    border-radius: 12px;
   }
 
   h1 {
-    margin: 0 0 8px 0;
-    font-size: 2.2rem;
-    letter-spacing: 0.5px;
-    text-shadow: 0 0 10px rgba(0,0,0,.5);
-  }
-  p {
-    margin: 4px 0;
-    font-size: 1.1rem;
-    color: #eaeaea;
-    text-shadow: 0 0 6px rgba(0,0,0,.35);
+    margin-bottom: 0.5rem;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, 18px); }
-    to   { opacity: 1; transform: translate(-50%, 0); }
+  p.note {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
   }
-  @keyframes floaty {
-    0%, 100% { transform: translate(-50%, 0); }
-    50%      { transform: translate(-50%, -10px); }
-  }
-
-  /* keep the chat bubble above */
-  #divicw, #divicw * { z-index: 99999; }
 </style>

@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webex Chat Widget Demo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMI / Webex Chat Widget — Minimal Demo</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f8fa;
-      color: #333;
-      text-align: center;
-      margin-top: 100px;
-    }
-    h1 {
-      color: #006aff;
-    }
-    #divicw {
-      margin-top: 50px;
-    }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 2rem; background:#f7f8fa; }
+    h1 { margin: 0 0 0.5rem; }
+    .note { margin: 0.25rem 0 1.25rem; color:#555; }
+    .box { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; max-width:720px; }
+    code { background:#f1f5f9; padding:0.1rem 0.35rem; border-radius:6px; }
+    .ok { margin-top: 1rem; font-size: 0.95rem; color:#111; }
   </style>
 </head>
 <body>
+  <h1>IMI / Webex Chat Widget — Minimal Demo</h1>
+  <p class="note">This page loads the widget script directly (no XHR) to avoid CORS/origin problems.</p>
 
-  <h1>Webex Chat Widget Demo Page</h1>
-  <p>This is a simple demo page to load and test the Webex (IMI) chat widget.</p>
+  <div class="box">
+    <p><strong>Instructions</strong></p>
+    <ol>
+      <li>Serve this file from a local web server (not <code>file://</code>). For example:
+        <ul>
+          <li><code>python -m http.server 8080</code> then open <code>http://localhost:8080/chat-demo.html</code></li>
+        </ul>
+      </li>
+      <li>Open your browser’s DevTools Console if you don’t see the launcher; copy any errors to me.</li>
+    </ol>
+
+    <p class="ok">If your tenant limits allowed origins, make sure <code>http://localhost:8080</code> (or whatever you use) is allow-listed.</p>
+  </div>
 
   <!-- Chat widget container -->
   <div id="divicw"
@@ -32,54 +38,32 @@
        data-guid="9029a5de-a658-4078-864c-cf8264b0dda0">
   </div>
 
-  <!-- Chat widget script -->
+  <!-- Load the IMI widget script directly (no XHR) -->
   <script>
-  var i = {
-    t: function(t) {
-      var e = "https://media.imi.chat/widget/js/imichatinit.js";
-      try {
-        var o = new XMLHttpRequest;
-        o.onreadystatechange = function() {
-          if (this.readyState == 4) {
-            var t = document.getElementById("divicw");
-            if (this.status == 0) {
-              i.o(t);
-              return;
-            }
-            var e = document.createElement("script");
-            e.innerHTML = this.responseText;
-            t.parentNode.insertBefore(e, t.nextSibling);
-          }
-        };
-        o.open("GET", e, true);
-        o.send();
-      } catch (s) {
-        console.error(s);
-      }
-    },
-    o: function(t) {
-      t.insertAdjacentHTML("afterend",
-        '<iframe id="tls_al_frm" frameborder="0" style="overflow:hidden;height:208px;width:394px;position:fixed;right:48px;bottom:12px;z-index:99999;display:none;"></iframe>'
-      );
-      var e = document.getElementById("tls_al_frm");
-      var o = e.contentWindow || (e.contentDocument.document || e.contentDocument);
-      o.document.open();
-      o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Unsupported Browser</title><style>body{font-family:Arial,sans-serif;color:#99a0b0;font-size:14px;}.popover__content{background-color:#fbfbfe;padding:1.5rem;border-radius:5px;width:300px;box-shadow:0 2px 5px rgba(0,0,0,0.26);position:relative;}.popover__message{font-weight:600;color:#56627c;font-size:16px;}.close-btn{position:absolute;right:15px;top:15px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message">This browser version is not supported on LiveChat.</div><p>Please update your browser to the latest version and reload the page.</p></div><script>function closeTLSAlert(){window.parent.postMessage({key:"close_tls_alert",value:"close_tls_alert",action:"close_tls_alert"},"*");}<\\/script></body></html>');
-      o.document.close();
-      e.style.display = "block";
-      window.addEventListener("message", function(t) {
-        if (t.data.action == "close_tls_alert") {
-          i.s();
-        }
-      });
-    },
-    s: function() {
-      var t = document.getElementById("tls_al_frm");
-      if (t) t.remove();
-    }
-  };
-  i.t(function(t) {});
+    (function loadIMI() {
+      var s = document.createElement('script');
+      s.src = "https://media.imi.chat/widget/js/imichatinit.js";
+      s.async = true;
+      s.onload = function(){ console.log('[IMI] widget script loaded'); };
+      s.onerror = function(e){ console.error('[IMI] failed to load script', e); };
+      document.head.appendChild(s);
+    })();
   </script>
 
+  <!-- Optional: simple "Chat Now" button (in case the widget doesn't auto-show its launcher) -->
+  <p style="margin-top:2rem;">
+    <button id="openChatBtn" style="padding:0.6rem 1rem;border-radius:10px;border:1px solid #d1d5db;background:#fff;cursor:pointer;">
+      Chat Now
+    </button>
+  </p>
+  <script>
+    // Some IMI builds expose a launcher or open method. If not, this is a no-op.
+    document.getElementById('openChatBtn').addEventListener('click', function () {
+      // Common patterns: try a global open, or click the launcher if present.
+      try { if (window.IMI && typeof IMI.open === 'function') { IMI.open(); return; } } catch(e){}
+      var launcher = document.querySelector('[id*="icw-launcher"], [class*="icw-launcher"], button[aria-label*="chat"], button[title*="chat"]');
+      if (launcher) { launcher.click(); }
+    });
+  </script>
 </body>
 </html>

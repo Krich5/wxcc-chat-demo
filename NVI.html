@@ -2,68 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IMI / Webex Chat Widget — Minimal Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Full-Screen Chat</title>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 2rem; background:#f7f8fa; }
-    h1 { margin: 0 0 0.5rem; }
-    .note { margin: 0.25rem 0 1.25rem; color:#555; }
-    .box { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; max-width:720px; }
-    code { background:#f1f5f9; padding:0.1rem 0.35rem; border-radius:6px; }
-    .ok { margin-top: 1rem; font-size: 0.95rem; color:#111; }
+    /* Page is just the chat */
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* The chat mount fills the viewport */
+    #chat-root {
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    /* Many IMI builds inject an iframe or a container near #divicw.
+       These rules coerce common selectors to full screen. Adjust if needed. */
+
+    /* Hide the floating launcher if the library adds one */
+    [id*="icw-launcher"],
+    [class*="icw-launcher"],
+    [data-testid*="launcher"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* Make any injected chat iframe/container full-bleed */
+    #chat-root iframe,
+    #divicw iframe,
+    [class*="icw-frame"],
+    [id*="icw-frame"] {
+      position: fixed !important;
+      inset: 0 !important;       /* top:0; right:0; bottom:0; left:0 */
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      z-index: 2147483647 !important; /* top */
+    }
+
+    /* If the widget uses a shadow host or inner container, stretch it too */
+    #chat-root > * {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+    }
   </style>
 </head>
 <body>
-  <h1>IMI / Webex Chat Widget — Minimal Demo</h1>
-  <p class="note">This page loads the widget script directly (no XHR) to avoid CORS/origin problems.</p>
-
-  <div class="box">
-    <p><strong>Instructions</strong></p>
-    <ol>
-      <li>Serve this file from a local web server (not <code>file://</code>). For example:
-        <ul>
-          <li><code>python -m http.server 8080</code> then open <code>http://localhost:8080/chat-demo.html</code></li>
-        </ul>
-      </li>
-      <li>Open your browser’s DevTools Console if you don’t see the launcher; copy any errors to me.</li>
-    </ol>
-
-    <p class="ok">If your tenant limits allowed origins, make sure <code>http://localhost:8080</code> (or whatever you use) is allow-listed.</p>
+  <!-- Dedicated full-screen mount -->
+  <div id="chat-root">
+    <!-- IMI widget’s expected div (use your values below) -->
+    <div id="divicw"
+         data-bind="FB77A4AB-9361-49FD-8473-6B38F9A1A5EA"
+         data-org=""
+         data-guid="9029a5de-a658-4078-864c-cf8264b0dda0">
+    </div>
   </div>
 
-  <!-- Chat widget container -->
-  <div id="divicw"
-       data-bind="FB77A4AB-9361-49FD-8473-6B38F9A1A5EA"
-       data-org=""
-       data-guid="9029a5de-a658-4078-864c-cf8264b0dda0">
-  </div>
-
-  <!-- Load the IMI widget script directly (no XHR) -->
+  <!-- Load the IMI widget directly (no XHR) -->
   <script>
     (function loadIMI() {
       var s = document.createElement('script');
       s.src = "https://media.imi.chat/widget/js/imichatinit.js";
       s.async = true;
-      s.onload = function(){ console.log('[IMI] widget script loaded'); };
+      s.onload = function(){
+        console.log('[IMI] widget script loaded');
+
+        /* Strategy A: try to programmatically open the chat and hide launcher. */
+        try {
+          if (window.IMI && typeof IMI.open === 'function') {
+            IMI.open(); // many tenants expose this
+          }
+        } catch(e){ console.debug('IMI.open not available', e); }
+
+        /* Strategy B: if there’s a launcher button, click it once to open the window. */
+        var tried = false;
+        var openIfLauncher = function(){
+          if (tried) return;
+          var launcher = document.querySelector('[id*="icw-launcher"], [class*="icw-launcher"], button[aria-label*="chat" i], button[title*="chat" i]');
+          if (launcher) {
+            tried = true;
+            try { launcher.click(); } catch(e){}
+          }
+        };
+        // Try soon after load, then a couple more times in case it mounts late.
+        setTimeout(openIfLauncher, 300);
+        setTimeout(openIfLauncher, 1000);
+        setTimeout(openIfLauncher, 2000);
+
+        /* Strategy C: coerce any injected iframe to full-screen if it ends up elsewhere. */
+        var forceFullscreen = function(){
+          var frames = Array.from(document.querySelectorAll('iframe'))
+            .filter(f => (f.src && /imi\.chat|imichat/i.test(f.src)) || f.id.includes('icw') || (f.className && f.className.toString().includes('icw')));
+          frames.forEach(function(f){
+            f.style.position = 'fixed';
+            f.style.top = '0';
+            f.style.left = '0';
+            f.style.right = '0';
+            f.style.bottom = '0';
+            f.style.width = '100vw';
+            f.style.height = '100vh';
+            f.style.border = '0';
+            f.style.boxShadow = 'none';
+            f.style.zIndex = '2147483647';
+          });
+        };
+        setTimeout(forceFullscreen, 600);
+        setTimeout(forceFullscreen, 1500);
+        setTimeout(forceFullscreen, 3000);
+      };
       s.onerror = function(e){ console.error('[IMI] failed to load script', e); };
       document.head.appendChild(s);
     })();
-  </script>
-
-  <!-- Optional: simple "Chat Now" button (in case the widget doesn't auto-show its launcher) -->
-  <p style="margin-top:2rem;">
-    <button id="openChatBtn" style="padding:0.6rem 1rem;border-radius:10px;border:1px solid #d1d5db;background:#fff;cursor:pointer;">
-      Chat Now
-    </button>
-  </p>
-  <script>
-    // Some IMI builds expose a launcher or open method. If not, this is a no-op.
-    document.getElementById('openChatBtn').addEventListener('click', function () {
-      // Common patterns: try a global open, or click the launcher if present.
-      try { if (window.IMI && typeof IMI.open === 'function') { IMI.open(); return; } } catch(e){}
-      var launcher = document.querySelector('[id*="icw-launcher"], [class*="icw-launcher"], button[aria-label*="chat"], button[title*="chat"]');
-      if (launcher) { launcher.click(); }
-    });
   </script>
 </body>
 </html>

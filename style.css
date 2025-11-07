@@ -1,38 +1,27 @@
-/* Base (only visible before chat appears) */
-html, body { height: 100%; }
-body {
-  margin: 0;
-  font-family: system-ui, Arial, sans-serif;
-  color: #fff;
-  background: url("Chat_Demo_Wallpaper.png") no-repeat center center fixed;
-  background-size: cover;
-  overflow: hidden;             /* don't scroll behind chat */
-  display: grid;
-  place-items: center;
-}
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 0;
-}
-.wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  padding: 3rem;
-  background: rgba(255,255,255,.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,.3);
-  transition: opacity .2s ease;
-}
-h1 { margin: 0 0 .5rem; }
-p.note { background: rgba(255,255,255,.2); padding: 1rem; border-radius: 8px; }
+  body {
+    font-family: system-ui, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #fff; /* adjust text for contrast */
+    height: 100vh;
+  }
 
-/* Fade hero once chat is detected */
-.is-chat-fullscreen .overlay,
-.is-chat-fullscreen .wrap { opacity: 0; pointer-events: none; }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: rgba(0, 0, 0, 0.5); /* adds a nice overlay behind text */
+    border-radius: 12px;
+  }
 
-/* Hide likely launchers/bubbles the SDK injects */
-[id*="launcher"], [class*="launcher"], [data-testid*="launcher"] { display: none !important; }
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  p.note {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+  }

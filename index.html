@@ -4,101 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Webex Connect Chat – CX Advanced Solutions Demo</title>
-
-  <style>
-    /* Reset and base styling */
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #fff;
-      text-align: center;
-      overflow: hidden; /* prevent page scroll behind chat */
-      background: #000; /* fallback while widget loads */
-    }
-
-    /* Background image (kept as a fallback while chat loads) */
-    body {
-      background: url("Chat_Demo_Wallpaper.png") no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Overlay to improve contrast */
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 0;
-    }
-
-    /* Main content (only visible before the widget mounts) */
-    .content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      padding: 2rem 3rem;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      transition: opacity .2s ease;
-    }
-
-    h1 { font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: 1px; }
-    p  { font-size: 1.1rem; color: #ccc; }
-
-    /* --- Full-screen overrides for the Webex Connect widget --- */
-    /* Catch the injected iframe by a few likely patterns. We also mark it with a data-attr once found. */
-    iframe[data-fullscreen-chat="1"],
-    iframe[id^="imi"],                /* common ids like imiChatFrame / imichat-... */
-    iframe[src*="imi.chat"],          /* network host */
-    iframe[src*="imichat"] {
-      position: fixed !important;
-      inset: 0 !important;            /* top/right/bottom/left = 0 */
-      width: 100vw !important;
-      height: 100vh !important;
-      max-width: 100vw !important;
-      max-height: 100vh !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      z-index: 2147483647 !important; /* above everything */
-    }
-
-    /* Hide floating launchers or bubbles the SDK might inject */
-    [class*="launcher"], [id*="launcher"], [data-testid*="launcher"] {
-      display: none !important;
-    }
-
-    /* When the chat goes full-screen, fade out the landing content */
-    .is-chat-fullscreen .overlay,
-    .is-chat-fullscreen .content {
-      opacity: 0;
-      pointer-events: none;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <!-- Fallback hero (quickly fades once chat mounts) -->
   <div class="overlay"></div>
-  <div class="content">
+  <main class="wrap">
     <h1>Webex Connect Chat Demo</h1>
     <p>Hosted by CX Advanced Solutions</p>
-    <p>Chat opens full-screen.</p>
-  </div>
+    <p class="note">Chat opens full-screen.</p>
+  </main>
 
-  <!-- Webex Connect Widget -->
+  <!-- Webex Connect widget host element (unchanged GUIDs from your page) -->
   <div id="divicw"
        data-bind="ABFE97A4-B352-40AE-92B5-E64558B39443"
        data-org=""
        data-guid="7ad20415-02d9-4c4e-a4ae-c5229f8f5266">
   </div>
 
+  <!-- Loads the Connect init the same way your page did -->
   <script>
-    // --- Load the Webex Connect init script exactly as before ---
     var i = {
       t: function () {
         var u = "https://media.imi.chat/widget/js/imichatinit.js";
@@ -137,62 +62,8 @@
       }
     };
     i.t();
-
-    // --- Make the widget full-screen whenever it appears ---
-    (function forceFullscreenChat() {
-      // Find the first likely chat iframe.
-      function markAndStretch(node) {
-        try {
-          if (!(node instanceof HTMLIFrameElement)) return false;
-          var src = node.getAttribute("src") || "";
-          var id  = node.id || "";
-          if (src.includes("imi.chat") || src.includes("imichat") || id.toLowerCase().includes("imi")) {
-            node.setAttribute("data-fullscreen-chat", "1");
-            document.documentElement.classList.add("is-chat-fullscreen");
-            // In case inline styles get overwritten later, re-apply after a tick.
-            requestAnimationFrame(() => {
-              Object.assign(node.style, {
-                position: "fixed",
-                top: "0", left: "0", right: "0", bottom: "0",
-                width: "100vw", height: "100vh",
-                maxWidth: "100vw", maxHeight: "100vh",
-                border: "0", borderRadius: "0",
-                boxShadow: "none",
-                zIndex: "2147483647"
-              });
-            });
-            return true;
-          }
-        } catch (e) {}
-        return false;
-      }
-
-      // Try immediately for fast loads.
-      Array.from(document.getElementsByTagName("iframe")).some(markAndStretch);
-
-      // Watch for future iframes (widget injects async).
-      var mo = new MutationObserver((muts) => {
-        muts.forEach(m => {
-          m.addedNodes && Array.from(m.addedNodes).forEach(n => {
-            if (markAndStretch(n)) { /* found */ }
-            // Also scan descendants in case a wrapper div was added.
-            if (n.querySelectorAll) {
-              n.querySelectorAll("iframe").forEach(markAndStretch);
-            }
-          });
-        });
-      });
-      mo.observe(document.documentElement, { childList: true, subtree: true });
-
-      // Keep size pinned on resize/orientation changes.
-      window.addEventListener("resize", () => {
-        const fr = document.querySelector('iframe[data-fullscreen-chat="1"]');
-        if (fr) {
-          fr.style.width = "100vw";
-          fr.style.height = "100vh";
-        }
-      });
-    })();
   </script>
+
+  <script src="script.js"></script>
 </body>
 </html>

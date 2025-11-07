@@ -4,25 +4,75 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Webex Connect Chat – CX Advanced Solutions Demo</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Reset and base styling */
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Background image */
+    body {
+      background: url("Chat_Demo_Wallpaper.png") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Overlay to improve contrast */
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    /* Main content */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+  </style>
 </head>
+
 <body>
-  <!-- Fallback hero (quickly fades once chat mounts) -->
   <div class="overlay"></div>
-  <main class="wrap">
+  <div class="content">
     <h1>Webex Connect Chat Demo</h1>
     <p>Hosted by CX Advanced Solutions</p>
-    <p class="note">Chat opens full-screen.</p>
-  </main>
+    <p>Interact with the chat widget in the lower right corner.</p>
+  </div>
 
-  <!-- Webex Connect widget host element (unchanged GUIDs from your page) -->
+  <!-- Webex Connect Widget -->
   <div id="divicw"
        data-bind="ABFE97A4-B352-40AE-92B5-E64558B39443"
        data-org=""
        data-guid="7ad20415-02d9-4c4e-a4ae-c5229f8f5266">
   </div>
 
-  <!-- Loads the Connect init the same way your page did -->
   <script>
     var i = {
       t: function () {
@@ -63,7 +113,5 @@
     };
     i.t();
   </script>
-
-  <script src="script.js"></script>
 </body>
 </html>
